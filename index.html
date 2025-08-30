@@ -4,819 +4,524 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baraka Bridge</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #2D6A4F;
-            --secondary-color: #40916C;
-            --accent-color: #B7E4C7;
-            --background-color: #F8F9FA;
-            --text-color: #333;
-            --light-gray: #E9ECEF;
-            --white: #FFFFFF;
-            --border-radius: 12px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-
-        /* General Resets and Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-
         body {
-            display: flex;
-            flex-direction: column;
-            max-width: 800px; /* Increased width */
-            margin: 0 auto;
-            border-left: 1px solid var(--light-gray);
-            border-right: 1px solid var(--light-gray);
-            position: relative;
-        }
-
-        /* Top Header */
-        .app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: var(--white);
-            border-bottom: 1px solid var(--light-gray);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .app-header h1 {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .profile-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        /* Main Content Area */
-        .main-content {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding: 1rem 1rem 6rem 1rem; /* Padding at bottom for nav bar */
-        }
-
-        .page {
-            display: none; /* Hide all pages by default */
-        }
-
-        .page.active {
-            display: block; /* Show only the active page */
-        }
-
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            display: flex;
-            justify-content: space-around;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            max-width: 800px; /* Increased width */
-            margin: 0 auto;
-            background-color: var(--white);
-            border-top: 1px solid var(--light-gray);
-            padding: 0.5rem 0;
-            z-index: 100;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #888;
-            transition: color 0.2s;
-            width: 16%;
-            font-size: 0.75rem;
-            text-align: center;
-        }
-        
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 4px;
-            fill: currentColor;
-        }
-
-        .nav-item.active {
-            color: var(--primary-color);
-        }
-
-        /* Generic Components */
-        .card {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .card h3 {
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-        }
-        
-        .card p {
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #555;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 8px;
-            background-color: var(--primary-color);
-            color: var(--white);
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.2s;
-        }
-
-        .btn:hover {
-            background-color: var(--secondary-color);
-        }
-
-        .btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
-            background-color: var(--accent-color);
-            color: var(--primary-color);
-            border-radius: 16px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            margin-right: 0.5rem;
-        }
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 0.25rem 0.6rem;
-            background-color: #e0f2fe;
-            color: #0c5484;
-            border-radius: 16px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        /* Specific Page Styles */
-
-        /* Create Post */
-        .create-post textarea {
-            width: 100%;
-            min-height: 80px;
-            padding: 0.75rem;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            resize: vertical;
             font-family: 'Inter', sans-serif;
-            font-size: 1rem;
+            background-color: #f8f9fa;
         }
-
-        /* Home Feed */
-        .feed-post .post-header {
+        .main-content {
+            display: none;
+        }
+        .main-content.active {
+            display: block;
+        }
+        .bottom-nav-item.active svg {
+            color: #2563eb;
+        }
+        .bottom-nav-item.active span {
+            color: #2563eb;
+        }
+        .modal {
+            display: none;
+        }
+        .modal.active {
             display: flex;
-            align-items: center;
-            margin-bottom: 0.75rem;
         }
-
-        .feed-post .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--light-gray);
-            margin-right: 0.75rem;
+        .btn-primary {
+            background-color: #2563eb;
+            color: white;
+            transition: background-color 0.3s;
         }
-
-        .feed-post .user-info h4 {
-            font-weight: 600;
+        .btn-primary:hover {
+            background-color: #1d4ed8;
         }
-        .feed-post .user-info span {
-            font-size: 0.8rem;
-            color: #777;
+        .tag {
+            background-color: #e0f2fe;
+            color: #0c4a6e;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
         }
-        
-        .feed-post .post-actions {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 1rem;
-            padding-top: 0.5rem;
-            border-top: 1px solid var(--light-gray);
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 6px;
         }
-        
-        .feed-post .action-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #666;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            transition: color 0.2s;
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
-        .feed-post .action-btn.active {
-            color: var(--primary-color);
-            font-weight: 600;
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
         }
-
-        /* The Network */
-        .network-item {
-            display: flex;
-            align-items: center;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
-        .network-item .info {
-            flex-grow: 1;
-        }
-        .network-item h4 { font-weight: 600; }
-        .network-item p { color: #666; font-size: 0.85rem;}
-
-
-        /* The Souk */
-        .souk-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-        .souk-item img {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 0.5rem;
-        }
-        .souk-item h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-        .souk-item .price {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        .souk-item .barakah-purchase {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.7rem;
-            color: var(--secondary-color);
-            margin-top: 0.5rem;
-        }
-
-        /* Splash Screen & Modal */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--primary-color);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            transition: opacity 0.5s;
-        }
-        .splash-screen h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-        }
-        .splash-screen p {
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            color: var(--accent-color);
-        }
-        .splash-screen .login-form {
-            width: 80%;
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        .splash-screen .splash-input {
-            padding: 0.8rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            background-color: rgba(255,255,255,0.9);
-            font-size: 1rem;
-        }
-        .splash-screen .btn {
-            background-color: var(--white);
-            color: var(--primary-color);
-        }
-        .splash-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 300;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .modal-overlay.visible {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-        }
-        .modal-content h3 { margin-bottom: 1rem; }
-        .modal-content p { margin-bottom: 1.5rem; }
-        .modal-content .btn { width: 100%; margin-top: 0.5rem; }
-
-        /* Responsive adjustments */
-        @media (max-width: 375px) {
-            .app-header h1 { font-size: 1.3rem; }
-            .splash-screen h1 { font-size: 2.5rem; }
-            .nav-item { font-size: 0.6rem; }
-        }
-        @media (min-width: 600px) {
-            .souk-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        @media (min-width: 768px) {
-            .souk-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
     </style>
 </head>
-<body>
+<body class="bg-gray-100">
 
-    <!-- Splash Screen for Login/Register -->
-    <div id="splashScreen" class="splash-screen">
-        <h1>Baraka Bridge</h1>
-        <p>An Interconnected Ummah-level Ecosystem</p>
-        <div class="login-form">
-            <input type="email" class="splash-input" placeholder="Email (optional)">
-            <input type="password" class="splash-input" placeholder="Password (optional)">
-            <button id="loginBtn" class="btn">Login / Register</button>
-        </div>
-    </div>
+    <div id="app" class="max-w-4xl mx-auto md:bg-white md:shadow-lg md:rounded-lg md:mt-4">
 
-    <!-- Modal for Interactions -->
-    <div id="interactionModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 id="modalTitle">Modal Title</h3>
-            <p id="modalText">Modal text goes here.</p>
-            <div id="modalActions"></div>
-            <button id="closeModalBtn" class="btn btn-outline" style="margin-top: 1rem;">Close</button>
-        </div>
-    </div>
-
-    <!-- Top Header -->
-    <header class="app-header">
-        <h1>Baraka Bridge</h1>
-        <div class="profile-icon">
-            <svg xmlns="http://www.w.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#2D6A4F"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main id="mainContent" class="main-content">
-        <!-- PAGE 1: Home -->
-        <div id="page-home" class="page active">
-            <div class="card create-post">
-                <h3>Create a Post</h3>
-                <textarea id="postInput" placeholder="Share your thoughts, projects, or opportunities..."></textarea>
-                <button id="createPostBtn" class="btn" style="margin-top: 0.5rem;">Post</button>
+        <!-- Header -->
+        <header class="bg-white shadow-sm sticky top-0 z-10 p-4 flex justify-between items-center md:rounded-t-lg">
+            <h1 class="text-2xl font-bold text-blue-600">Baraka Bridge</h1>
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-search text-gray-600 cursor-pointer"></i>
+                <i class="fas fa-bell text-gray-600 cursor-pointer"></i>
+                <div id="profile-icon" class="cursor-pointer">
+                    <img src="https://placehold.co/40x40/E2E8F0/4A5568?text=AU" class="w-8 h-8 rounded-full" alt="User Profile">
+                </div>
             </div>
-            <div id="home-feed-content">
-                <!-- Dynamically populated feed -->
-            </div>
-        </div>
+        </header>
 
-        <!-- PAGE 2: The Halal Network -->
-        <div id="page-network" class="page">
-            <input type="text" class="search-bar" placeholder="Search professionals, businesses...">
-            <div id="network-content">
-                <!-- Dynamically populated network items -->
-            </div>
-        </div>
+        <main class="pb-20 md:pb-4 p-4 md:p-6">
 
-        <!-- PAGE 3: The Souk -->
-        <div id="page-souk" class="page">
-            <input type="text" class="search-bar" placeholder="Search products, services...">
-            <div id="souk-content" class="souk-grid">
-                <!-- Dynamically populated souk items -->
-            </div>
-        </div>
+            <!-- Home Screen -->
+            <div id="home" class="main-content active">
+                <div class="bg-white p-4 rounded-lg shadow mb-4">
+                    <textarea class="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Share an update, ask a question..."></textarea>
+                    <div class="flex justify-end mt-2">
+                        <button class="btn-primary px-4 py-2 rounded-lg font-semibold">Post</button>
+                    </div>
+                </div>
 
-        <!-- PAGE 4: The Salam Exchange -->
-        <div id="page-exchange" class="page">
-            <input type="text" class="search-bar" placeholder="Search jobs, freelance gigs...">
-            <div id="exchange-content">
-                <!-- Dynamically populated exchange items -->
+                <!-- Feed Posts -->
+                <div id="feed-container">
+                    <!-- Dynamic feed posts will be injected here -->
+                </div>
             </div>
-        </div>
 
-        <!-- PAGE 5: The Majlis -->
-        <div id="page-majlis" class="page">
-            <input type="text" class="search-bar" placeholder="Search discussions, topics...">
-             <div id="majlis-content">
-                <!-- Dynamically populated majlis items -->
+            <!-- The Halal Network -->
+            <div id="network" class="main-content">
+                <h2 class="text-xl font-bold mb-4">The Halal Network</h2>
+                 <div class="mb-4">
+                    <input type="text" placeholder="Search by industry, skill, country..." class="w-full p-2 border rounded-lg">
+                </div>
+                <div class="p-4 bg-white rounded-lg shadow">
+                    <h3 class="font-bold text-lg mb-2">Bridges of Opportunity</h3>
+                    <div id="network-users-container" class="space-y-4">
+                        <!-- Dynamic network users will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Souk -->
+            <div id="souk" class="main-content">
+                <h2 class="text-xl font-bold mb-4">The Souk</h2>
+                <div class="mb-4">
+                     <input type="text" placeholder="Search for products or services..." class="w-full p-2 border rounded-lg">
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- Dynamic souk items will be injected here -->
+                </div>
+            </div>
+
+            <!-- The Salam Exchange -->
+            <div id="exchange" class="main-content">
+                <h2 class="text-xl font-bold mb-4">The Salam Exchange</h2>
+                <div class="flex border-b mb-4">
+                    <button class="tab-btn active px-4 py-2 font-semibold border-b-2 border-blue-600 text-blue-600" data-tab="jobs">Jobs</button>
+                    <button class="tab-btn px-4 py-2 font-semibold text-gray-600" data-tab="gigs">Freelance Gigs</button>
+                </div>
+                <div id="jobs-content" class="tab-content">
+                    <!-- Dynamic jobs will be injected here -->
+                </div>
+                <div id="gigs-content" class="tab-content hidden">
+                    <!-- Dynamic gigs will be injected here -->
+                </div>
+            </div>
+
+            <!-- The Majlis -->
+            <div id="majlis" class="main-content">
+                <h2 class="text-xl font-bold mb-4">The Majlis</h2>
+                <button class="w-full btn-primary py-2 rounded-lg mb-4">+ Start a New Majlis</button>
+                <div class="space-y-4">
+                    <!-- Dynamic majlis topics will be injected here -->
+                </div>
+            </div>
+            
+            <!-- Falah Capital -->
+            <div id="falah" class="main-content">
+                <h2 class="text-xl font-bold mb-4">Falah Capital</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-blue-50">
+                        <i class="fas fa-handshake text-3xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold">Partnerships</h3>
+                        <p class="text-sm text-gray-600">Find or propose a business partnership.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-blue-50">
+                        <i class="fas fa-building text-3xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold">Acquisitions</h3>
+                        <p class="text-sm text-gray-600">Explore businesses for halal acquisition.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-blue-50">
+                        <i class="fas fa-chart-line text-3xl text-blue-600 mb-2"></i>
+                        <h3 class="font-bold">Capital Fund</h3>
+                        <p class="text-sm text-gray-600">View investment opportunities.</p>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <h3 class="font-semibold text-lg mb-2">Active Opportunities</h3>
+                    <div class="bg-white p-4 rounded-lg shadow space-y-3">
+                         <!-- Dynamic Falah opportunities will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile" class="main-content">
+                 <!-- Profile content will be dynamically generated -->
+            </div>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-white shadow-t border-t max-w-4xl mx-auto md:rounded-b-lg">
+            <div class="flex justify-around">
+                <a href="#" class="bottom-nav-item flex-1 text-center py-2 text-gray-600 active" data-target="home">
+                    <i class="fas fa-home text-xl"></i><span class="block text-xs">Home</span>
+                </a>
+                <a href="#" class="bottom-nav-item flex-1 text-center py-2 text-gray-600" data-target="network">
+                    <i class="fas fa-users text-xl"></i><span class="block text-xs">Network</span>
+                </a>
+                <a href="#" class="bottom-nav-item flex-1 text-center py-2 text-gray-600" data-target="souk">
+                    <i class="fas fa-store text-xl"></i><span class="block text-xs">Souk</span>
+                </a>
+                <a href="#" class="bottom-nav-item flex-1 text-center py-2 text-gray-600" data-target="exchange">
+                    <i class="fas fa-briefcase text-xl"></i><span class="block text-xs">Exchange</span>
+                </a>
+                <a href="#" class="bottom-nav-item flex-1 text-center py-2 text-gray-600" data-target="majlis">
+                    <i class="fas fa-comments text-xl"></i><span class="block text-xs">Majlis</span>
+                </a>
+                 <a href="#" class="bottom-nav-item flex-1 text-center py-2 text-gray-600" data-target="falah">
+                    <i class="fas fa-seedling text-xl"></i><span class="block text-xs">Falah</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Modals -->
+        <div id="bridge-modal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+                <h3 class="text-lg font-bold mb-4">Build a Bridge with <span id="modal-username"></span></h3>
+                <p class="mb-4">Please choose your intention for connecting.</p>
+                <select id="bridge-intention" class="w-full border rounded-lg p-2 mb-4">
+                    <option>Job Opportunity</option>
+                    <option>Community Collaboration</option>
+                    <option>Business Partnership</option>
+                    <option>Mentorship</option>
+                </select>
+                <div class="flex justify-end space-x-2">
+                    <button id="cancel-bridge" class="px-4 py-2 bg-gray-200 rounded-lg">Cancel</button>
+                    <button id="send-bridge-request" class="btn-primary px-4 py-2 rounded-lg">Send Request</button>
+                </div>
             </div>
         </div>
         
-        <!-- PAGE 6: Falah Capital -->
-        <div id="page-capital" class="page">
-            <input type="text" class="search-bar" placeholder="Search partnerships, funds...">
-            <div id="capital-content">
-                <!-- Dynamically populated capital items -->
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // --- MOCK DATABASE ---
+    const db = {
+        users: [
+            { id: 1, name: 'Fatima Al-Fihri', title: 'Halal Tech Entrepreneur', location: 'Malaysia', halalFocus: 'FinTech', verified: true, avatar: 'https://placehold.co/80x80/93C5FD/FFFFFF?text=FA' },
+            { id: 2, name: 'Yusuf Ahmed', title: 'Islamic Art Designer', location: 'UK', halalFocus: 'Creative Arts', verified: false, avatar: 'https://placehold.co/80x80/A5B4FC/FFFFFF?text=YA' },
+            { id: 3, name: 'Aisha Khan', title: 'Shariah-compliant Marketing', location: 'USA', halalFocus: 'Digital Marketing', verified: true, avatar: 'https://placehold.co/80x80/FDBA74/FFFFFF?text=AK' },
+            { id: 4, name: 'Omar Abdullah', title: 'Halal Food Supplier', location: 'UAE', halalFocus: 'E-commerce, B2B', verified: true, avatar: 'https://placehold.co/80x80/86EFAC/FFFFFF?text=OA' },
+        ],
+        posts: [
+            { userId: 3, content: "Alhamdulillah, just launched a new marketing campaign for a client in the modest fashion industry. It's a blessing to align work with our values. #HalalMarketing", likes: 25, comments: 4 },
+            { userId: 1, content: "Exciting news! Our Halal FinTech startup just secured a new round of funding. Looking to expand our team. Check out the Salam Exchange for openings! #FinTech #Baraka", likes: 58, comments: 12 },
+            { userId: 4, content: "Looking for reliable organic honey suppliers from Turkey. If you have any connections, please build a bridge! JazakAllah Khair.", likes: 15, comments: 7 },
+        ],
+        souk: [
+            { id: 1, name: 'Handmade Prayer Beads', seller: 'Yusuf Ahmed', price: 25.00, image: 'https://placehold.co/300x300/A5B4FC/FFFFFF?text=Tasbih' },
+            { id: 2, name: 'Organic Medina Dates (1kg)', seller: 'Omar Abdullah', price: 40.00, image: 'https://placehold.co/300x300/86EFAC/FFFFFF?text=Dates' },
+            { id: 3, name: 'Islamic Calligraphy Art', seller: 'Yusuf Ahmed', price: 150.00, image: 'https://placehold.co/300x300/A5B4FC/FFFFFF?text=Art' },
+            { id: 4, name: 'Modest Wear Abaya', seller: 'Aisha Khan', price: 75.00, image: 'https://placehold.co/300x300/FDBA74/FFFFFF?text=Abaya' }
+        ],
+        jobs: [
+            { id: 1, title: 'Senior Flutter Developer', company: 'Halal FinTech Inc.', location: 'Remote', type: 'Full-time', verified: true },
+            { id: 2, title: 'Content Writer (Islamic Topics)', company: 'Hikmah Media', location: 'UK', type: 'Part-time', verified: true },
+            { id: 3, title: 'Customer Support Specialist', company: 'MuslimCharity Org', location: 'USA', type: 'Full-time', verified: false },
+        ],
+        gigs: [
+            { id: 1, title: 'Logo Design for a Dawah Channel', budget: 200, skills: ['Graphic Design', 'Branding'] },
+            { id: 2, title: 'Translate a 5-page document (Arabic to English)', budget: 100, skills: ['Translation', 'Arabic'] },
+            { id: 3, title: 'Halal Marketing Strategy Consultation', budget: 500, skills: ['Marketing', 'Strategy'] },
+        ],
+        majlis: [
+            { id: 1, topic: 'Fiqh of Business: Navigating Modern Challenges', author: 'Sheikh Abdullah', replies: 45, participants: 120, scholar: true },
+            { id: 2, topic: 'Mental Resilience for Muslim Entrepreneurs', author: 'Aisha Khan', replies: 78, participants: 250, scholar: false },
+            { id: 3, topic: 'How to build a Barakah-driven brand?', author: 'Fatima Al-Fihri', replies: 62, participants: 180, scholar: false },
+        ],
+        falah: [
+            { id: 1, title: 'Seeking Partnership for Halal Food Delivery App', type: 'Partnership', industry: 'Food Tech' },
+            { id: 2, title: 'Modest Fashion Brand for Acquisition', type: 'Acquisition', industry: 'E-commerce' },
+            { id: 3, title: 'Investment Opportunity in Ethical Agriculture Project', type: 'Capital Fund', industry: 'Agriculture' },
+        ]
+    };
+    
+    // --- RENDER FUNCTIONS ---
+    function getUserById(id) {
+        return db.users.find(u => u.id === id);
+    }
+
+    function renderFeed() {
+        const container = document.getElementById('feed-container');
+        container.innerHTML = db.posts.map(post => {
+            const user = getUserById(post.userId);
+            return `
+                <div class="bg-white p-4 rounded-lg shadow mb-4">
+                    <div class="flex items-center mb-2">
+                        <img src="${user.avatar}" class="w-10 h-10 rounded-full mr-3" alt="${user.name}">
+                        <div>
+                            <p class="font-bold">${user.name}</p>
+                            <p class="text-sm text-gray-500">${user.title}</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-800">${post.content}</p>
+                    <div class="flex justify-between items-center mt-4 text-gray-500">
+                        <div><i class="far fa-heart mr-1"></i> ${post.likes}</div>
+                        <div><i class="far fa-comment mr-1"></i> ${post.comments}</div>
+                        <div><i class="fas fa-share mr-1"></i> Share</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderNetworkUsers() {
+        const container = document.getElementById('network-users-container');
+        container.innerHTML = db.users.map(user => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <img src="${user.avatar}" class="w-12 h-12 rounded-full mr-4" alt="${user.name}">
+                    <div>
+                        <p class="font-bold">${user.name} ${user.verified ? '<i class="fas fa-check-circle text-blue-500 text-xs"></i>' : ''}</p>
+                        <p class="text-sm text-gray-600">${user.title}</p>
+                        <p class="text-xs text-gray-500">${user.location}</p>
+                    </div>
+                </div>
+                <button class="build-bridge-btn btn-primary px-3 py-1 rounded-full text-sm font-semibold" data-user-id="${user.id}" data-user-name="${user.name}">
+                    Build a Bridge
+                </button>
             </div>
-        </div>
-    </main>
+        `).join('');
+    }
 
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" data-page="home">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>Home</span>
-        </div>
-        <div class="nav-item" data-page="network">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-            <span>Network</span>
-        </div>
-        <div class="nav-item" data-page="souk">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 6h-2c0-2.21-1.79-4-4-4S8 3.79 8 6H6c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6-2c1.1 0 2 .9 2 2h-4c0-1.1.9-2 2-2zm6 16H6V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h4v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></svg>
-            <span>Souk</span>
-        </div>
-        <div class="nav-item" data-page="exchange">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-            <span>Exchange</span>
-        </div>
-        <div class="nav-item" data-page="majlis">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.5 18.5c1.93 1.93 4.5 2.93 7.5 2.93s5.57-1 7.5-2.93C19.99 17.01 21 15.63 21 14c0-1.04-.54-1.98-1.21-2.57L12 2 4.21 11.43C3.54 12.02 3 12.96 3 14c0 1.63 1.01 3.01 2.5 4.5zM12 4.15 17.17 9H6.83L12 4.15z"/></svg>
-            <span>Majlis</span>
-        </div>
-        <div class="nav-item" data-page="capital">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.89 12.45c-.32.08-.66.13-1 .15-1.43.09-2.81-.39-3.83-1.4-1.1-1.1-1.57-2.61-1.44-4.13.09-1.07.49-2.09 1.14-2.95.65-.85 1.52-1.48 2.5-1.84.09-.03.18-.06.27-.08.28-.08.56-.13.84-.13.99 0 1.94.39 2.65 1.09.71.71 1.09 1.66 1.09 2.65 0 .28-.05.56-.13.84-.03.09-.06.18-.08.27-.36.98-.99 1.85-1.84 2.5s-1.88 1.05-2.95 1.14c-.06 0-.11.01-.17.01zM18 14.1c0 .49-.4 1.1-1.2 1.1s-1.2-.61-1.2-1.1.3-1 .8-1.1l.6-.2c.2-.1.5-.1.7 0l.3.1c.4.2.4.6.4.7z"/></svg>
-            <span>Capital</span>
-        </div>
-    </nav>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // --- MOCK DATA ---
-            const mockData = {
-                homeFeed: [
-                    { type: 'post', user: 'Fatima Ahmed', handle: 'Halal Tech Innovator', content: 'Alhamdulillah, excited to share that our new app "Dua Daily" has reached 10,000 downloads! Seeking collaborators for the next phase, especially in UI/UX design. #HalalTech #Muslimpreneur' },
-                    { type: 'souk', business: 'Medina Honey Co.', content: 'Fresh batch of Sidr Honey just arrived! 100% pure and ethically sourced. Get yours with a 15% discount for the first 50 orders.', image: 'https://placehold.co/600x400/B7E4C7/2D6A4F?text=Sidr+Honey' },
-                    { type: 'exchange', title: 'Community Manager', company: 'Islamic Relief', location: 'Remote', content: 'We are hiring a passionate Community Manager to engage with our volunteers and donors. Must have strong communication skills and a passion for sadaqah.' },
-                    { type: 'post', user: 'Yusuf Khan', handle: 'Islamic Finance Expert', content: 'Just published an article on the principles of Mudarabah in modern startups. It\'s crucial we build our businesses on sound, ethical foundations. Link in my profile.' }
-                ],
-                network: [
-                    { category: 'Professionals', items: [
-                        { name: 'Aisha Rahman', role: 'UX/UI Designer, Halal Tech', verified: true },
-                        { name: 'Bilal Hassan', role: 'Shariah-compliant Investment Advisor', verified: true },
-                        { name: 'Zainab Ali', role: 'Freelance Writer, Dawah Content', verified: false }
-                    ]},
-                    { category: 'Businesses', items: [
-                        { name: 'Nour Modest Wear', role: 'Clothing & Apparel', verified: true },
-                        { name: 'Barakah Foods', role: 'Halal Certified Groceries', verified: true }
-                    ]}
-                ],
-                souk: [
-                    { name: 'Handmade Prayer Beads', price: '$25.00', seller: 'Tasbih Crafts', image: 'https://placehold.co/400x400/D8F3DC/2D6A4F?text=Beads', barakah: true },
-                    { name: 'Organic Olive Oil from Palestine', price: '$30.00', seller: 'Zaytoun Essentials', image: 'https://placehold.co/400x400/B7E4C7/2D6A4F?text=Oil', barakah: true },
-                    { name: 'Islamic Calligraphy Art', price: '$150.00', seller: 'Art of Iman', image: 'https://placehold.co/400x400/95D5B2/2D6A4F?text=Art', barakah: false },
-                    { name: 'The Seerah Collection (Books)', price: '$75.00', seller: 'Iqra Books', image: 'https://placehold.co/400x400/74C69D/2D6A4F?text=Books', barakah: true }
-                ],
-                exchange: [
-                    { type: 'Job', title: 'Halal Marketing Specialist', company: 'Muslim Central', verified: true, details: 'Full-time, Remote' },
-                    { type: 'Freelance', title: 'Arabic to English Translation', company: 'Dawah Projects Inc.', verified: false, details: 'Project-based, $500 budget' },
-                    { type: 'Job', title: 'Software Engineer (Backend)', company: 'Baraka Bank', verified: true, details: 'Full-time, Kuala Lumpur' }
-                ],
-                majlis: [
-                    { title: 'Fiqh of Business: Navigating Contracts in the Modern World', category: 'Islamic Knowledge', active: 128 },
-                    { title: 'Mental Resilience for Muslim Entrepreneurs', category: 'Business', active: 76 },
-                    { title: 'How to build a "Barakah Brand"?', category: 'Career', active: 92 }
-                ],
-                capital: [
-                    { type: 'Partnership', title: 'Seeking Distribution Partner for Modest Activewear Brand', industry: 'E-commerce' },
-                    { type: 'Acquisition', title: 'Halal Meal-Prep Service for Sale', industry: 'Food & Beverage' },
-                    { type: 'Capital Fund', title: 'Ummah Tech Fund - Investing in early-stage Halal startups', industry: 'Venture Capital' }
-                ]
-            };
-
-            // --- DOM ELEMENTS ---
-            const mainContent = document.getElementById('mainContent');
-            const navItems = document.querySelectorAll('.nav-item');
-            const pages = document.querySelectorAll('.page');
-            const splashScreen = document.getElementById('splashScreen');
-            const loginBtn = document.getElementById('loginBtn');
-            const modal = document.getElementById('interactionModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const createPostBtn = document.getElementById('createPostBtn');
-            const postInput = document.getElementById('postInput');
-            
-            // --- RENDER FUNCTIONS ---
-            const renderHome = () => {
-                const container = document.getElementById('home-feed-content');
-                container.innerHTML = mockData.homeFeed.map(item => {
-                    if (item.type === 'post') {
-                        return `
-                        <div class="card feed-post">
-                            <div class="post-header">
-                                <div class="avatar"></div>
-                                <div class="user-info">
-                                    <h4>${item.user}</h4>
-                                    <span>${item.handle}</span>
-                                </div>
-                            </div>
-                            <p>${item.content}</p>
-                            <div class="post-actions">
-                                <button class="action-btn barakah-btn">✨ Barakah</button>
-                                <button class="action-btn">💬 Comment</button>
-                                <button class="action-btn">🔗 Share</button>
-                            </div>
-                        </div>`;
-                    }
-                    if (item.type === 'souk') {
-                        return `
-                        <div class="card feed-post">
-                             <div class="post-header">
-                                <div class="avatar" style="background-image: url('${item.image}'); background-size: cover;"></div>
-                                <div class="user-info">
-                                    <h4>${item.business}</h4>
-                                    <span>From The Souk</span>
-                                </div>
-                            </div>
-                            <p>${item.content}</p>
-                            <img src="${item.image}" style="width: 100%; border-radius: 8px; margin-top: 1rem;" />
-                            <div class="post-actions">
-                               <button class="action-btn">🛍️ View Product</button>
-                               <button class="action-btn">❤️ Save</button>
-                            </div>
-                        </div>`;
-                    }
-                    if (item.type === 'exchange') {
-                         return `
-                        <div class="card feed-post">
-                             <div class="post-header">
-                                <div class="avatar" style="background-color: #e0f2fe"></div>
-                                <div class="user-info">
-                                    <h4>${item.company}</h4>
-                                    <span>Hiring on The Salam Exchange</span>
-                                </div>
-                            </div>
-                            <h3>${item.title} (${item.location})</h3>
-                            <p>${item.content}</p>
-                             <div class="post-actions">
-                               <button class="action-btn">📄 View Job</button>
-                               <button class="action-btn">🔗 Share</button>
-                            </div>
-                        </div>`;
-                    }
-                }).join('');
-            };
-
-            const renderNetwork = () => {
-                const container = document.getElementById('network-content');
-                container.innerHTML = mockData.network.map(cat => `
-                    <div class="card">
-                        <h3>${cat.category}</h3>
-                        ${cat.items.map(item => `
-                        <div class="network-item item-card" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--light-gray);">
-                            <div class="avatar" style="margin-right: 1rem;"></div>
-                            <div class="info">
-                                <h4>${item.name} ${item.verified ? '<span class="badge">✅ Verified</span>' : ''}</h4>
-                                <p>${item.role}</p>
-                            </div>
-                            <button class="btn btn-outline build-bridge-btn" data-name="${item.name}">Build a Bridge</button>
-                        </div>
-                        `).join('')}
+    function renderSoukItems() {
+        const container = document.querySelector('#souk .grid');
+        container.innerHTML = db.souk.map(item => `
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <img src="${item.image}" class="w-full h-40 object-cover" alt="${item.name}">
+                <div class="p-4">
+                    <h4 class="font-bold truncate">${item.name}</h4>
+                    <p class="text-sm text-gray-600">by ${item.seller}</p>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="font-bold text-lg text-blue-600">$${item.price.toFixed(2)}</span>
+                         <button class="bg-green-500 text-white px-3 py-1 rounded-full text-sm hover:bg-green-600">Buy</button>
                     </div>
-                `).join('');
-            };
+                     <button class="w-full mt-2 text-sm bg-yellow-400 text-yellow-900 py-1 rounded-full hover:bg-yellow-500">
+                        <i class="fas fa-hand-holding-heart"></i> Barakah Purchase
+                     </button>
+                </div>
+            </div>
+        `).join('');
+    }
 
-            const renderSouk = () => {
-                const container = document.getElementById('souk-content');
-                container.innerHTML = mockData.souk.map(item => `
-                    <div class="card item-card">
-                        <img src="${item.image}" alt="${item.name}">
-                        <h4>${item.name}</h4>
-                        <p style="font-size: 0.8rem; color: #666; margin-bottom: 0.5rem;">by ${item.seller}</p>
-                        <div class="price">${item.price}</div>
-                        ${item.barakah ? `<div class="barakah-purchase">💖 Barakah Purchase Available</div>` : ''}
+    function renderJobs() {
+        const container = document.getElementById('jobs-content');
+        container.innerHTML = db.jobs.map(job => `
+            <div class="bg-white p-4 rounded-lg shadow mb-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-bold text-lg">${job.title}</h4>
+                        <p class="text-gray-700">${job.company} ${job.verified ? '<i class="fas fa-check-circle text-blue-500 text-xs" title="Verified Halal Employer"></i>' : ''}</p>
+                        <p class="text-sm text-gray-500">${job.location} • ${job.type}</p>
                     </div>
-                `).join('');
-            };
-            
-            const renderExchange = () => {
-                const container = document.getElementById('exchange-content');
-                container.innerHTML = mockData.exchange.map(item => `
-                    <div class="card item-card">
-                        <div style="display: flex; justify-content: space-between; align-items: start;">
-                            <div>
-                                <span class="tag">${item.type}</span>
-                                <h3>${item.title}</h3>
-                                <p style="font-weight: 500;">${item.company} ${item.verified ? '<span class="badge">✅ Verified Halal Employer</span>' : ''}</p>
-                                <p style="font-size: 0.85rem; color: #666;">${item.details}</p>
-                            </div>
-                             <button class="btn apply-btn">Apply</button>
-                        </div>
-                    </div>
-                `).join('');
-            };
-            
-            const renderMajlis = () => {
-                 const container = document.getElementById('majlis-content');
-                 container.innerHTML = mockData.majlis.map(item => `
-                    <div class="card item-card">
-                        <span class="tag">${item.category}</span>
-                        <h3>${item.title}</h3>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                            <p style="font-size: 0.85rem; color: #666;">${item.active} active participants</p>
-                            <button class="btn btn-outline">Join Discussion</button>
-                        </div>
-                    </div>
-                 `).join('');
-            };
+                    <button class="btn-primary px-4 py-2 rounded-lg text-sm">Apply</button>
+                </div>
+                <div class="mt-2 pt-2 border-t">
+                     <p class="text-xs text-green-700"><i class="fas fa-mosque"></i> Prayer-friendly workplace</p>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function renderGigs() {
+        const container = document.getElementById('gigs-content');
+        container.innerHTML = db.gigs.map(gig => `
+            <div class="bg-white p-4 rounded-lg shadow mb-3">
+                 <div class="flex justify-between items-start">
+                     <div>
+                         <h4 class="font-bold text-lg">${gig.title}</h4>
+                         <div class="flex flex-wrap gap-2 mt-2">
+                            ${gig.skills.map(skill => `<span class="tag">${skill}</span>`).join('')}
+                         </div>
+                     </div>
+                     <div class="text-right">
+                         <p class="font-bold text-lg text-green-600">$${gig.budget}</p>
+                         <button class="btn-primary px-4 py-2 rounded-lg text-sm mt-2">Submit Proposal</button>
+                     </div>
+                 </div>
+            </div>
+        `).join('');
+    }
 
-            const renderCapital = () => {
-                 const container = document.getElementById('capital-content');
-                 container.innerHTML = mockData.capital.map(item => `
-                    <div class="card item-card">
-                        <span class="tag">${item.type}</span>
-                        <h3>${item.title}</h3>
-                        <p style="font-size: 0.85rem; color: #666;">Industry: ${item.industry}</p>
-                        <button class="btn" style="margin-top: 1rem;">View Proposal</button>
-                    </div>
-                 `).join('');
-            };
+    function renderMajlisTopics() {
+        const container = document.querySelector('#majlis .space-y-4');
+        container.innerHTML = db.majlis.map(topic => `
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h4 class="font-bold">${topic.topic}</h4>
+                <p class="text-sm text-gray-600">Started by: ${topic.author} ${topic.scholar ? '<span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full ml-1">Verified Scholar</span>' : ''}</p>
+                <div class="flex justify-between items-center mt-2 text-sm text-gray-500">
+                    <span>${topic.replies} Replies</span>
+                    <span>${topic.participants} Participants</span>
+                    <a href="#" class="font-semibold text-blue-600">Join Discussion</a>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    function renderFalahOpportunities() {
+        const container = document.querySelector('#falah .space-y-3');
+        container.innerHTML = db.falah.map(opp => `
+             <div class="border p-3 rounded-lg flex justify-between items-center">
+                <div>
+                    <span class="tag">${opp.type}</span>
+                    <p class="font-semibold mt-1">${opp.title}</p>
+                    <p class="text-sm text-gray-500">${opp.industry}</p>
+                </div>
+                <button class="text-blue-600 font-semibold text-sm">Explore</button>
+            </div>
+        `).join('');
+    }
 
-            // --- APP LOGIC ---
-            const switchPage = (pageId) => {
-                pages.forEach(page => page.classList.remove('active'));
-                const targetPage = document.getElementById(`page-${pageId}`);
-                if (targetPage) targetPage.classList.add('active');
-                navItems.forEach(item => item.classList.toggle('active', item.dataset.page === pageId));
-                mainContent.scrollTop = 0;
-            };
+    function renderProfilePage() {
+        const container = document.getElementById('profile');
+        const user = db.users[0]; // Displaying first user as example
+        container.innerHTML = `
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex flex-col items-center">
+                    <img src="${user.avatar}" class="w-24 h-24 rounded-full mb-4 border-4 border-blue-500" alt="${user.name}">
+                    <h2 class="text-2xl font-bold">${user.name} ${user.verified ? '<i class="fas fa-check-circle text-blue-500"></i>' : ''}</h2>
+                    <p class="text-gray-600">${user.title}</p>
+                    <p class="text-sm text-gray-500 mt-1">${user.location}</p>
+                </div>
+                <div class="mt-6 border-t pt-4">
+                    <h3 class="font-bold text-lg">Halal Focus</h3>
+                    <p>${user.halalFocus}</p>
+                </div>
+                <div class="mt-4">
+                     <h3 class="font-bold text-lg">Bio</h3>
+                     <p>Passionate entrepreneur dedicated to building ethical and impactful technology solutions for the Ummah. Founder of a leading Halal FinTech platform.</p>
+                </div>
+                 <div class="mt-4">
+                     <h3 class="font-bold text-lg">My Shop</h3>
+                     <p class="text-sm text-gray-500">This user does not have any products listed yet.</p>
+                </div>
+                 <div class="mt-4">
+                     <h3 class="font-bold text-lg">My Majlis Discussions</h3>
+                     <p class="text-sm text-gray-500">This user has not started any discussions.</p>
+                </div>
+            </div>
+        `;
+    }
 
-            const showModal = (title, text, actionsHtml = '') => {
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalText').textContent = text;
-                document.getElementById('modalActions').innerHTML = actionsHtml;
-                modal.classList.add('visible');
-            };
+    // --- NAVIGATION LOGIC ---
+    const navItems = document.querySelectorAll('.bottom-nav-item');
+    const mainContents = document.querySelectorAll('.main-content');
 
-            const hideModal = () => modal.classList.remove('visible');
-
-            const handleSearch = (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                const contentContainer = e.target.nextElementSibling;
-                const items = contentContainer.querySelectorAll('.item-card');
-                
-                items.forEach(item => {
-                    const itemText = item.textContent.toLowerCase();
-                    item.style.display = itemText.includes(searchTerm) ? '' : 'none';
-                });
-            };
-
-            // --- EVENT LISTENERS ---
-            navItems.forEach(item => {
-                item.addEventListener('click', () => switchPage(item.dataset.page));
-            });
-            
-            loginBtn.addEventListener('click', () => {
-                splashScreen.classList.add('hidden');
-            });
-
-            closeModalBtn.addEventListener('click', hideModal);
-            modal.addEventListener('click', (e) => {
-                if(e.target === modal) hideModal();
-            });
-
-            createPostBtn.addEventListener('click', () => {
-                const content = postInput.value.trim();
-                if (content) {
-                    const newPostHTML = `
-                        <div class="card feed-post">
-                            <div class="post-header">
-                                <div class="avatar" style="background-color: var(--secondary-color);"></div>
-                                <div class="user-info">
-                                    <h4>Your Name</h4>
-                                    <span>Just now</span>
-                                </div>
-                            </div>
-                            <p>${content.replace(/\n/g, '<br>')}</p>
-                            <div class="post-actions">
-                                <button class="action-btn barakah-btn">✨ Barakah</button>
-                                <button class="action-btn">💬 Comment</button>
-                                <button class="action-btn">🔗 Share</button>
-                            </div>
-                        </div>`;
-                    document.getElementById('home-feed-content').insertAdjacentHTML('afterbegin', newPostHTML);
-                    postInput.value = '';
-                }
-            });
-
-            document.querySelectorAll('.search-bar').forEach(bar => {
-                bar.addEventListener('input', handleSearch);
-            });
-
-            mainContent.addEventListener('click', (e) => {
-                if (e.target.matches('.build-bridge-btn')) {
-                    const name = e.target.dataset.name;
-                    const actions = `<button class="btn" onclick="alert('Sent: Job Opportunity')">Job Opportunity</button> <button class="btn" onclick="alert('Sent: Community Collaboration')">Community Collaboration</button>`;
-                    showModal('Build a Bridge', `Choose your intention for connecting with ${name}:`, actions);
-                }
-                if(e.target.matches('.apply-btn')) {
-                    e.target.textContent = 'Applied ✔';
-                    e.target.disabled = true;
-                }
-                if(e.target.matches('.barakah-btn')) {
-                    e.target.classList.toggle('active');
-                }
-            });
-
-            // --- INITIALIZATION ---
-            const init = () => {
-                renderHome();
-                renderNetwork();
-                renderSouk();
-                renderExchange();
-                renderMajlis();
-                renderCapital();
-                switchPage('home');
-            };
-
-            init();
+    function switchTab(targetId) {
+        mainContents.forEach(content => {
+            content.classList.remove('active');
         });
-    </script>
+        navItems.forEach(item => {
+            item.classList.remove('active');
+        });
+
+        document.getElementById(targetId).classList.add('active');
+        document.querySelector(`.bottom-nav-item[data-target="${targetId}"]`)?.classList.add('active');
+        window.scrollTo(0, 0); // Scroll to top on tab change
+    }
+
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = e.currentTarget.dataset.target;
+            switchTab(targetId);
+        });
+    });
+
+    document.getElementById('profile-icon').addEventListener('click', () => {
+        switchTab('profile');
+    });
+
+    // Exchange Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active', 'border-blue-600', 'text-blue-600'));
+            btn.classList.add('active', 'border-blue-600', 'text-blue-600');
+
+            tabContents.forEach(content => content.classList.add('hidden'));
+            if(btn.dataset.tab === 'jobs') {
+                document.getElementById('jobs-content').classList.remove('hidden');
+            } else {
+                document.getElementById('gigs-content').classList.remove('hidden');
+            }
+        });
+    });
+
+    // --- MODAL LOGIC ---
+    const bridgeModal = document.getElementById('bridge-modal');
+    const modalUsername = document.getElementById('modal-username');
+    const cancelBridgeBtn = document.getElementById('cancel-bridge');
+    const sendBridgeRequestBtn = document.getElementById('send-bridge-request');
+    let currentBridgeUserId = null;
+
+    document.body.addEventListener('click', function(e) {
+        if (e.target.classList.contains('build-bridge-btn')) {
+            currentBridgeUserId = e.target.dataset.userId;
+            modalUsername.textContent = e.target.dataset.userName;
+            bridgeModal.classList.add('active');
+        }
+    });
+
+    function closeModal() {
+        bridgeModal.classList.remove('active');
+    }
+
+    cancelBridgeBtn.addEventListener('click', closeModal);
+    sendBridgeRequestBtn.addEventListener('click', () => {
+        const intention = document.getElementById('bridge-intention').value;
+        console.log(`Sending bridge request to user ${currentBridgeUserId} with intention: ${intention}`);
+        alert('Bridge request sent! (Check console for details)');
+        closeModal();
+    });
+    
+    // --- INITIAL RENDER ---
+    function initializeApp() {
+        renderFeed();
+        renderNetworkUsers();
+        renderSoukItems();
+        renderJobs();
+        renderGigs();
+        renderMajlisTopics();
+        renderFalahOpportunities();
+        renderProfilePage();
+    }
+
+    initializeApp();
+});
+</script>
+
 </body>
 </html>
-
